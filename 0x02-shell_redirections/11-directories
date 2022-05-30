@@ -1,2 +1,2 @@
 #!/bin/bash
-find .vim/* -mindepth 0 -type d | wc -l
+find . -type d -not -name '.' | wc -l
