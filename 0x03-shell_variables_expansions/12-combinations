@@ -1,0 +1,2 @@
+#!/bin/bash
+echo {a..e}{a..e} | tr " " "\n" | sed '/aa/d'
