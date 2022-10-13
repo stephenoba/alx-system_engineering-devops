@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# echoes 'Best School' and a conditional 'Hi' at the 9th iteration
+
+i=0
+
+while [ $i -lt 10 ]
+do
+  if [ $i -eq 9 ]
+  then
+    echo "Hi"
+  fi
+  echo "Best School"
+  (( i++ ))
+done
