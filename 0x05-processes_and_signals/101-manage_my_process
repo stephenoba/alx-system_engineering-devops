@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# manages process `manage_my_process`
+# COMMANDS
+#	:start - starts process and creates file /var/run/my_process.pid
+#	that contains process PID
+#	:stop - stops process and deletes file /var/run/my_process.pid
+#	:restart - runs the stop command and then the start command
+
+start() {
+	./manage_my_process &
+	echo "$(pgrep -f manage_my_process)" > /var/run/my_process.pid
+	echo "manage_my_process started"
+}
+
+stop() {
+	kill -s 9 "$(pgrep -f ./manage_my_process)"
+	rm /var/run/my_process.pid
+	echo "manage_my_process stopped"
+}
+
+restart() {
+	stop
+	start
+	echo "manage_my_process restarted"
+}
+
+if [ "$#" -ne 1 ]
+then
+        echo "Usage: manage_my_process {start|stop|restart}"                
+elif [ "$1" == "start" ]
+then
+        start
+elif [ "$1" == "stop" ]
+then
+	stop
+elif [ "$1" == "restart" ]
+then
+	restart
+else
+	echo "Usage: manage_my_process {start|stop|restart}"
+fi
