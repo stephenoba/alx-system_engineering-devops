@@ -8,12 +8,12 @@
 
 start() {
 	./manage_my_process &
-	echo "$(pgrep -f manage_my_process)" > /var/run/my_process.pid
+	"$(pgrep -f manage_my_process)" > /var/run/my_process.pid
 	echo "manage_my_process started"
 }
 
 stop() {
-	kill -s 9 "$(pgrep -f ./manage_my_process)"
+	kill "$(pgrep -f ./manage_my_process)"
 	rm /var/run/my_process.pid
 	echo "manage_my_process stopped"
 }
@@ -24,10 +24,7 @@ restart() {
 	echo "manage_my_process restarted"
 }
 
-if [ "$#" -ne 1 ]
-then
-        echo "Usage: manage_my_process {start|stop|restart}"                
-elif [ "$1" == "start" ]
+if [ "$1" == "start" ]
 then
         start
 elif [ "$1" == "stop" ]
