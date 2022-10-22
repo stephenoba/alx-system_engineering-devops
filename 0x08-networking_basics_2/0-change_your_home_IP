@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Bash script configures an Ubuntu server with;
+#    localhost resolves to 127.0.0.2
+#    facebook.com resolves to 8.8.8.8.
+
+cp /etc/hosts ~/hosts
+echo -e "0.0.0.0\t\tfacebook.com" >> ~/hosts
+sed -e 's/\(127.0.0.\)[0-255]\s\+\(localhost\)/127.0.0.2\tlocalhost/' ~/hosts
+cp -f ~/hosts /etc/hosts
+sleep 2
+rm ~/hosts
