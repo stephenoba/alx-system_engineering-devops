@@ -1,8 +1,15 @@
 # Script configures ssh to use private key ~/.ssh/school
 # Configures SSH to refuse authentication using password
 
-file { 'config':
+file { '/etc/ssh/ssh_config':
   ensure  => 'present',
-  content => 'Host *\n\tPasswordAuthentication no\n\tIdentityFile ~/.ssh/school',
-  path    => '~/.ssh/config',
+}->
+file_line { 'Turn off passwd auth':
+  path => '/etc/ssh/ssh_config',  
+  line => 'PasswordAuthentication yes',
+  match   => "^#?\sPasswordAuthentication*$",
+}->
+file_line { 'Declare identity file':
+  path => '/etc/ssh/ssh_config',  
+  line => '\tIdentityFile ~/.ssh/school',
 }
