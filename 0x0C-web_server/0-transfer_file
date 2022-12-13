@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 4 ]
+then
+  echo "Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+else
+  LOCAL_FILE_PATH=$1
+  SERVER_IP=$2
+  USERNAME=$3
+  PRIVATE_KEY=$4
+  scp -o StrictHostKeyChecking=no \
+    "$PRIVATE_KEY" \
+    "$LOCAL_FILE_PATH" \
+    "$USERNAME@$SERVER_IP":~
+fi
