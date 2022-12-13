@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 # Connects to server.
-ssh -i ~/.ssh/school ubuntu@54.237.78.109
+echo "I was here" | ssh -i ~/.ssh/school ubuntu@54.237.78.109 "cat >> ~/hello.txt"
