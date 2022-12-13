@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# based on task 3 this script configures a 404 page
+
+# install nginx
+apt-get update
+apt-get -y install nginx
+
+# adjust the firewall
+ufw allow 'Nginx HTTP'
+
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+
+# Add a 404 page
+touch /etc/nginx/html/404.html
+echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
+
+printf %s "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root   /etc/nginx/html;
+        index  index.html index.htm;
+
+	location /redirect_me {
+        	return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    	}
+
+	error_page 404 /custom_404.html;
+    	location /not-found {
+      		root /etc/nginx/html;
+      		internal;
+    	}
+}" > /etc/nginx/sites-available/default
+
+# restart nginx
+service nginx restart
