@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# based on task 1 this script configures a redirect
+
+# install nginx
+apt-get update
+apt-get -y install nginx
+
+# adjust the firewall
+ufw allow 'Nginx HTTP'
+
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+
+printf %s "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root   /etc/nginx/html;
+        index  index.html index.htm;
+
+	location /redirect_me {
+        	return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    	}
+}" > /etc/nginx/sites-available/default
+
+# restart nginx
+service nginx restart
