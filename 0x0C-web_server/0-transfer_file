@@ -9,7 +9,7 @@ else
   SERVER_IP=$2
   USERNAME=$3
   PRIVATE_KEY=$4
-  scp -o StrictHostKeyChecking=no \
+  scp -o StrictHostKeyChecking=no -i \
     "$PRIVATE_KEY" \
     "$LOCAL_FILE_PATH" \
     "$USERNAME@$SERVER_IP":~
