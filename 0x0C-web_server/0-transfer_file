@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Copy file to remote server
 
 if [ $# -ne 4 ]
 then
