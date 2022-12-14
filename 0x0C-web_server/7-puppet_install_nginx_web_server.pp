@@ -1,59 +1,50 @@
 # Script installs and configures Nginx
 
-class nginx {
-  exec {'apt-get update':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'apt-get -y install':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  file { 'index.html':
-    ensure  => 'present',
-    content => 'Hello World!',
-    mode    => '0744',
-    group   => 'www-data',
-    owner   => 'www-data',
-    path    => '/etc/nginx/html/index.html',
-  }
-  file { 'custom_404.html':
-    ensure  => 'present',
-    content => 'Ceci n\'est pas une page',
-    mode    => '0744',
-    group   => 'www-data',
-    owner   => 'www-data',
-    path    => '/etc/nginx/html/custom_404.html',
-  }
-  exec {'ech0 "server {\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\tlisten 80 default_server;\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\tlisten [::]:80 default_server;\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\troot   /etc/nginx/html;\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\tindex  index.html index.htm;\n\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\tlocation /redirect_me {\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "\t}\n" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  exec {'ech0 "}" >> /etc/nginx/sites-available/default':
-    path => '/usr/bin/:/usr/local/bin/:/bin/'
-  }
-  service {'nginx':
-    ensure => 'running',
-    enable => 'true',
-  }
+package {'nginx':
+  ensure => installed,
 }
-
-include nginx
+file { '/etc/nginx/html':
+  ensure => 'directory',
+}
+file { 'index.html':
+  ensure  => 'present',
+  content => 'Hello World!',
+  path    => '/etc/nginx/html/index.html',
+}
+file { 'custom_404.html':
+  ensure  => 'present',
+  content => 'Ceci n\'est pas une page',
+  path    => '/etc/nginx/html/custom_404.html',
+}
+exec {'echo "server {" > /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\tlisten 80 default_server;" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\tlisten [::]:80 default_server;" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\troot   /etc/nginx/html;" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\tindex  index.html index.htm;\n" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\tlocation /redirect_me {" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "\t}" >> /etc/nginx/sites-available/default':
+  path => '/usr/bin/:/usr/local/bin/:/bin/'
+}
+exec {'echo "}" >> /etc/nginx/sites-available/default':
+  path   => '/usr/bin/:/usr/local/bin/:/bin/',
+  notify => Service['nginx']
+}
+service { 'nginx':
+  ensure => 'running',
+  enable => true,
+}
