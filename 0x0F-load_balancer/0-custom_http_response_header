@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Install Nginx and configure
+
+# install nginx
+apt-get update
+apt-get -y install nginx
+
+# adjust the firewall
+ufw allow 'Nginx HTTP'
+
+mkdir /etc/nginx/html
+touch /etc/nginx/html/index.html
+echo "Hello World!" > /etc/nginx/html/index.html
+
+printf %s "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root   /etc/nginx/html;
+        index  index.html index.htm;
+	server_name _;
+
+	location / {
+		add_header X-Served-By $HOSTNAME;
+		try_files $uri $uri/ =404;
+	}
+}" > /etc/nginx/sites-available/default
+
+# restart nginx
+service nginx restart
