@@ -20,13 +20,10 @@ exec {'echo "\tlisten 80 default_server;" >> /etc/nginx/sites-available/default'
 exec {'echo "\tlisten [::]:80 default_server;" >> /etc/nginx/sites-available/default':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
-exec {'echo "\tindex  index.html index.htm;\n" >> /etc/nginx/sites-available/default':
-  path => '/usr/bin/:/usr/local/bin/:/bin/'
-}
 exec {'echo "\tlocation / {" >> /etc/nginx/sites-available/default':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
-exec {'echo "\t\tadd_header X-Served-By $HOSTNAME;" >> /etc/nginx/sites-available/default':
+exec {'echo -e "\t\tadd_header X-Served-By \$HOSTNAME;" >> /etc/nginx/sites-available/default':
   path => '/usr/bin/:/usr/local/bin/:/bin/'
 }
 exec {'echo "\t\troot   /etc/nginx/html;" >> /etc/nginx/sites-available/default':
