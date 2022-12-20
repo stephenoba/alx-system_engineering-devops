@@ -8,20 +8,24 @@ apt-get -y install nginx
 # adjust the firewall
 ufw allow 'Nginx HTTP'
 
-mkdir /etc/nginx/html
-touch /etc/nginx/html/index.html
+if [ -d "/etc/nginx/html" ]
+then
+  echo "Directory /etc/nginx/html already exists. Skipping..."
+else
+  mkdir /etc/nginx/html
+fi
+
 echo "Hello World!" > /etc/nginx/html/index.html
 
 printf %s "server {
         listen 80 default_server;
         listen [::]:80 default_server;
-        root   /etc/nginx/html;
-        index  index.html index.htm;
 	server_name _;
 
 	location / {
 		add_header X-Served-By $HOSTNAME;
-		try_files $uri $uri/ =404;
+		root       /etc/nginx/html;
+		index      index.html index.htm;
 	}
 }" > /etc/nginx/sites-available/default
 

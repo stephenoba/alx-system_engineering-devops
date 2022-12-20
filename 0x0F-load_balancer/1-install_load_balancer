@@ -14,13 +14,18 @@ echo "ENABLED=1" >> /etc/default/haproxy
 # backup original config
 cp -a /etc/haproxy/haproxy.cfg{,.orig}
 
+sed -i 's/daemon/daemon\n\th1-case-adjust x-served-by X-Served-By/' \
+  /etc/haproxy/haproxy.cfg
+
 {
 	echo -e "\nfrontend http"
 	echo -e "\tbind *:80"
 	echo -e "\toption forwardfor"
+	echo -e "\toption h1-case-adjust-bogus-client"
 	echo -e "\tdefault_backend nginx_webservers"
 	echo -e "\nbackend nginx_webservers"
 	echo -e "\tbalance roundrobin"
+	echo -e "\toption h1-case-adjust-bogus-server"
 	echo -e "\tserver web-01\t54.237.78.109 check port 80"
 	echo -e "\tserver web-02\t54.210.182.37 check port 80"
 } >> /etc/haproxy/haproxy.cfg
