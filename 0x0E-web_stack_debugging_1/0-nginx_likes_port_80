@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Script fixes a server with bad nginx sites-enabled configuration
+
+if [ -d "/etc/nginx/sites-enabled" ]
+then
+  echo "Deleting file /etc/nginx/sites-enabled/default"
+  rm /etc/nginx/sites-enabled/default
+else
+  echo "Creating directory /etc/nginx/sites-enabled"
+  mkdir /etc/nginx/sites-enabled/default
+fi
+
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+service nginx restart
+echo "Done!"
