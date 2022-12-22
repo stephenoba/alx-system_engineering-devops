@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# script display A record information of subdomains
+
+write_output () {
+  echo "The subdomain $2 is a $(dig "$2.$1" \
+    | grep --after-context=1 "ANSWER SECTION" \
+    | tail -1 | tr '\t' ' ' \
+    | awk '{ print $4 " record and points to "  $5 }')"
+}
+
+if [ $# == 1 ]
+then
+  write_output $1 "www"
+  write_output $1 "lb-01"
+  write_output $1 "web-01"
+  write_output $1 "web-02"
+elif [ $# == 2 ]
+then
+  write_output $1 $2
+fi
