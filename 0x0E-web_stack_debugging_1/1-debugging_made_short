@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Script fixes a server with bad nginx sites-enabled configuration
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+service nginx restart
