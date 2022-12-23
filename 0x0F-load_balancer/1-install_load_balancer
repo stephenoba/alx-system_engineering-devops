@@ -25,5 +25,12 @@ cp -a /etc/haproxy/haproxy.cfg{,.orig}
 	echo -e "\tserver 65257-web-02\t54.210.182.37 check port 80"
 } >> /etc/haproxy/haproxy.cfg
 
-# restart haproxy
-service haproxy restart
+# test HAProxy configuration
+if [ -z "$(haproxy -f /etc/haproxy/haproxy.cfg -c | grep 'is valid')" ]
+then
+  echo "HAProxy configuration is Invalid"
+  exit
+else
+  # restart haproxy
+  service haproxy restart
+fi
